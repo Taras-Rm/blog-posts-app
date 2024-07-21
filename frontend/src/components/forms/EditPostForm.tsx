@@ -1,7 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z, ZodType } from "zod";
-import { EditPost } from "../../types/post";
+import { updatePost } from "../../api/posts";
+import { EditPost, Post } from "../../types/post";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import TextArea from "../ui/TextArea";
@@ -12,16 +14,34 @@ const validation: ZodType<EditPost> = z.object({
   author: z.string().min(3).max(300),
 });
 
-function EditPostForm() {
+interface EditPostFormProps {
+  post: Post;
+}
+
+function EditPostForm({ post }: EditPostFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<EditPost>({
     resolver: zodResolver(validation),
+    defaultValues: post,
   });
 
-  const onSubmit = (data: EditPost) => console.log({ data });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleCreatePost = async (data: EditPost) => {
+    try {
+      setIsLoading(true);
+      await updatePost(post.id, data);
+    } catch (error) {
+      console.log("api error: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onSubmit = (data: EditPost) => handleCreatePost(data);
 
   return (
     <form
@@ -44,7 +64,9 @@ function EditPostForm() {
         error={errors.author?.message}
       />
 
-      <Button type="submit">Create</Button>
+      <Button type="submit" isLoading={isLoading}>
+        Update
+      </Button>
     </form>
   );
 }
