@@ -12,12 +12,12 @@ const getPost = async (id: number) => {
 };
 
 const createPost = async (data: CreatePost) => {
-  const response = await api.post<Post>("/posts", { data: { ...data } });
+  const response = await api.post<Post>("/posts", { ...data });
   return response.data;
 };
 
 const updatePost = async (id: number, data: EditPost) => {
-  const response = await api.put<Post>(`/posts/${id}`, { data: { ...data } });
+  const response = await api.put<Post>(`/posts/${id}`, { ...data });
   return response.data;
 };
 

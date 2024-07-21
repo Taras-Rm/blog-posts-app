@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z, ZodType } from "zod";
+import { createPost } from "../../api/posts";
 import { CreatePost } from "../../types/post";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
@@ -17,11 +19,26 @@ function CreatePostForm() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<CreatePost>({
     resolver: zodResolver(validation),
   });
 
-  const onSubmit = (data: CreatePost) => console.log({ data });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleCreatePost = async (data: CreatePost) => {
+    try {
+      setIsLoading(true);
+      await createPost(data);
+      reset();
+    } catch (error) {
+      console.log("api error: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onSubmit = (data: CreatePost) => handleCreatePost(data);
 
   return (
     <form
@@ -44,7 +61,7 @@ function CreatePostForm() {
         error={errors.author?.message}
       />
 
-      <Button type="submit">Create</Button>
+      <Button type="submit" isLoading={isLoading}>Create</Button>
     </form>
   );
 }

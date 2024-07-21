@@ -1,4 +1,4 @@
-import CreatePostForm from "../../components/forms/EditPostForm";
+import CreatePostForm from "../../components/forms/CreatePostForm";
 import PageWrapper from "../../components/PageWrapper";
 
 function CreatePostPage() {

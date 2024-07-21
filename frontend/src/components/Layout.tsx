@@ -9,7 +9,7 @@ function Layout({}: LayoutProps) {
     <div className="h-screen relative">
       <Header />
 
-      <div className="h-[calc(100%-68px)]">
+      <div className="h-[calc(100%-80px)]">
         <MaxWidthWrapper>
           <Outlet />
         </MaxWidthWrapper>

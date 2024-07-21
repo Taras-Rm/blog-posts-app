@@ -1,61 +1,47 @@
+import { useEffect, useState } from "react";
+import { getAllPosts } from "../../api/posts";
 import PageWrapper from "../../components/PageWrapper";
 import PostCard from "../../components/PostCard";
+import Loader from "../../components/ui/Loader";
 import { Post } from "../../types/post";
 
 function HomePage() {
-  const defPosts: Post[] = [
-    {
-      id: 1,
-      title: "First post",
-      content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum dolor laboriosam quisquam sed nobis porro quas nihil harum eligendi! Quod voluptates sint voluptatum ab velit enim, animi consequuntur perferendis earum.",
-      author: "Tar Rom",
-      createdAt: "12.02.2001",
-    },
-    {
-      id: 2,
-      title: "Second shorter post",
-      content:
-        "Lorem ipsum dolor sit amet consect harum eligendi! Quod voluptates sint voluptatum ab velit enim, animi consequuntur perferendis earum.",
-      author: "Ira Rom",
-      createdAt: "21.05.2002",
-    },
-    {
-      id: 3,
-      title: "Second shorter post",
-      content:
-        "Lorem ipsum dolor sit amet consect harum eligendi! Quod voluptates sint voluptatum ab velit enim, animi consequuntur perferendis earum.",
-      author: "Ira Rom",
-      createdAt: "21.05.2002",
-    },
-    {
-      id: 4,
-      title: "Second shorter post",
-      content:
-        "Lorem ipsum dolor sit amet consect harum eligendi! Quod voluptates sint voluptatum ab velit enim, animi consequuntur perferendis earum.",
-      author: "Ira Rom",
-      createdAt: "21.05.2002",
-    },
-    {
-      id: 5,
-      title: "Second shorter post",
-      content:
-        "Lorem ipsum dolor sit amet consect harum eligendi! Quod voluptates sint voluptatum ab velit enim, animi consequuntur perferendis earum.",
-      author: "Ira Rom",
-      createdAt: "21.05.2002",
-    },
-  ];
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleGetAllPosts = async () => {
+    try {
+      setIsLoading(true);
+      const data = await getAllPosts();
+      setPosts(data);
+    } catch (error) {
+      console.log("api error: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    handleGetAllPosts();
+  }, []);
+
   return (
     <PageWrapper title="Blog Posts">
-      <div className="space-y-3">
-        {defPosts.length > 0 ? (
-          defPosts.map((post) => <PostCard key={post.id} post={post} />)
-        ) : (
-          <div className="flex justify-center py-10 text-3xl text-slate-500">
-            No posts
-          </div>
-        )}
-      </div>
+      {
+        <div className="space-y-3">
+          {isLoading ? (
+            <div className="flex justify-center pt-10">
+              <Loader />
+            </div>
+          ) : posts.length > 0 ? (
+            posts.map((post) => <PostCard key={post.id} post={post} />)
+          ) : (
+            <div className="flex justify-center py-10 text-3xl text-slate-500">
+              No posts
+            </div>
+          )}
+        </div>
+      }
     </PageWrapper>
   );
 }
