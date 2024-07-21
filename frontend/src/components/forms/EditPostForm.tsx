@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { z, ZodType } from "zod";
 import { updatePost } from "../../api/posts";
 import { EditPost, Post } from "../../types/post";
@@ -34,6 +35,7 @@ function EditPostForm({ post }: EditPostFormProps) {
     try {
       setIsLoading(true);
       await updatePost(post.id, data);
+      toast.success("Post updated!");
     } catch (error) {
       console.log("api error: ", error);
     } finally {

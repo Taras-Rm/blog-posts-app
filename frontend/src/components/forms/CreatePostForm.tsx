@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { z, ZodType } from "zod";
 import { createPost } from "../../api/posts";
 import { CreatePost } from "../../types/post";
@@ -31,6 +32,7 @@ function CreatePostForm() {
       setIsLoading(true);
       await createPost(data);
       reset();
+      toast.success("Post created!");
     } catch (error) {
       console.log("api error: ", error);
     } finally {
@@ -61,7 +63,9 @@ function CreatePostForm() {
         error={errors.author?.message}
       />
 
-      <Button type="submit" isLoading={isLoading}>Create</Button>
+      <Button type="submit" isLoading={isLoading}>
+        Create
+      </Button>
     </form>
   );
 }
