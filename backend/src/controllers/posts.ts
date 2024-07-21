@@ -1,26 +1,27 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { postsService } from "../services/posts";
 import { CreatePostModel, UpdatePostModel } from "../types/models";
 import {
-    RequestWithBody,
-    RequestWithParams,
-    RequestWithParamsAndBody,
+  RequestWithBody,
+  RequestWithParams,
+  RequestWithParamsAndBody,
 } from "../types/requests";
 import { httpStatus } from "../utils/httpStatus";
 
-const getPosts = async (_: Request, res: Response) => {
+const getPosts = async (_: Request, res: Response, next: NextFunction) => {
   try {
     const posts = await postsService.getAll();
 
     res.status(httpStatus.OK).json(posts);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
 const getPost = async (
   req: RequestWithParams<{ id: string }>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const id = parseInt(req.params.id);
@@ -29,13 +30,14 @@ const getPost = async (
 
     res.status(httpStatus.OK).json(post);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
 const createPost = async (
   req: RequestWithBody<CreatePostModel>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const data = req.body;
@@ -44,13 +46,14 @@ const createPost = async (
 
     res.status(httpStatus.CREATED).json(createdPost);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
 const updatePost = async (
   req: RequestWithParamsAndBody<{ id: string }, UpdatePostModel>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const id = parseInt(req.params.id);
@@ -60,13 +63,14 @@ const updatePost = async (
 
     res.status(httpStatus.OK).json(updatedPost);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
 const deletePost = async (
   req: RequestWithParams<{ id: string }>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const id = parseInt(req.params.id);
@@ -75,7 +79,7 @@ const deletePost = async (
 
     res.status(httpStatus.NO_CONTENT).send();
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 

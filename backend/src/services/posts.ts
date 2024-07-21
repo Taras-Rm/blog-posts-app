@@ -1,12 +1,23 @@
 import prisma from "../database";
 import { CreatePostModel } from "../types/models";
+import { ApiError } from "../utils/apiError";
+import { httpStatus } from "../utils/httpStatus";
 
 const getAll = async () => {
   return await prisma.post.findMany();
 };
 
 const getById = async (id: number) => {
-  return await prisma.post.findUnique({ where: { id } });
+  const post = await prisma.post.findUnique({ where: { id } });
+
+  if (!post) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      `can not find post with id: ${id}`
+    );
+  }
+
+  return post;
 };
 
 const create = async (post: CreatePostModel) => {
@@ -23,7 +34,10 @@ const updateById = async (id: number, post: CreatePostModel) => {
   });
 
   if (!existingPost) {
-    throw new Error(`can not find post with id: ${id}`);
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      `can not find post with id: ${id}`
+    );
   }
 
   return await prisma.post.update({
@@ -40,7 +54,10 @@ const deleteById = async (id: number) => {
   });
 
   if (!existingPost) {
-    throw new Error(`can not find post with id: ${id}`);
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      `can not find post with id: ${id}`
+    );
   }
 
   await prisma.post.delete({ where: { id } });

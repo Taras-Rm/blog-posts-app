@@ -3,8 +3,6 @@ import { postsController } from "../controllers/posts";
 
 const router = Router();
 
-postsController;
-
 router.get("/", postsController.getPosts);
 router.get("/:id", postsController.getPost);
 router.post("/", postsController.createPost);
