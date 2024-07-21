@@ -8,7 +8,7 @@ import TextArea from "../ui/TextArea";
 
 const validation: ZodType<CreatePost> = z.object({
   title: z.string().min(3).max(300),
-  content: z.string().min(3).max(1000),
+  content: z.string().min(10).max(1000),
   author: z.string().min(3).max(300),
 });
 
