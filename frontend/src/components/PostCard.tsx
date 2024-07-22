@@ -28,7 +28,7 @@ function PostCard({ post, onDeleteClick }: PostCardProps) {
 
         <div className="text-slate-500 flex justify-between">
           <div>{formatDate(post.createdAt)}</div>
-          <div>
+          <div className="font-medium text-black">
             Author: <span>{post.author}</span>
           </div>
         </div>
