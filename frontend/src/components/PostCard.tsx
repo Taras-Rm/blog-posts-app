@@ -7,9 +7,10 @@ import Tooltip from "./ui/Tooltip";
 
 interface PostCardProps {
   post: Post;
+  onDeleteClick: () => void;
 }
 
-function PostCard({ post }: PostCardProps) {
+function PostCard({ post, onDeleteClick }: PostCardProps) {
   const navigate = useNavigate();
 
   return (
@@ -44,7 +45,7 @@ function PostCard({ post }: PostCardProps) {
         </Tooltip>
 
         <Tooltip title="Delete">
-          <button>
+          <button onClick={() => onDeleteClick()}>
             <Trash2 className="text-red-500" />
           </button>
         </Tooltip>

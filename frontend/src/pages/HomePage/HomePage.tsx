@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { getAllPosts } from "../../api/posts";
 import PageWrapper from "../../components/PageWrapper";
 import PostCard from "../../components/PostCard";
+import Prompt from "../../components/Prompt";
 import Loader from "../../components/ui/Loader";
 import { Post } from "../../types/post";
 
 function HomePage() {
+  const [showDeletePostPrompt, setShowDeletePostPrompt] = useState(false);
+
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,7 +37,13 @@ function HomePage() {
               <Loader />
             </div>
           ) : posts.length > 0 ? (
-            posts.map((post) => <PostCard key={post.id} post={post} />)
+            posts.map((post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                onDeleteClick={() => setShowDeletePostPrompt(true)}
+              />
+            ))
           ) : (
             <div className="flex justify-center py-10 text-3xl text-slate-500">
               No posts
@@ -42,6 +51,12 @@ function HomePage() {
           )}
         </div>
       }
+      <Prompt
+        show={showDeletePostPrompt}
+        setShow={setShowDeletePostPrompt}
+        title="Delete post"
+        description="Do you really want to delete post ?"
+      />
     </PageWrapper>
   );
 }
