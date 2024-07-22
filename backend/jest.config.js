@@ -4,5 +4,5 @@ module.exports = {
   transform: {
     "^.+.tsx?$": ["ts-jest",{}],
   },
-  rootDir: "__tests__"
+  rootDir: "./src/__tests__"
 };

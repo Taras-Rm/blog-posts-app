@@ -1,6 +1,6 @@
 import request from "supertest";
-import app from "../src/app";
-import { cleanDb } from "../src/database";
+import app from "../app";
+import { cleanDb } from "../database";
 
 beforeEach(async () => {
   await cleanDb();
