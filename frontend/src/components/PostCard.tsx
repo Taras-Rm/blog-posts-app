@@ -3,6 +3,7 @@ import { generatePath, useNavigate } from "react-router-dom";
 import { formatDate } from "../lib/date";
 import { routes } from "../pages/routes";
 import { Post } from "../types/post";
+import Tooltip from "./ui/Tooltip";
 
 interface PostCardProps {
   post: Post;
@@ -32,16 +33,21 @@ function PostCard({ post }: PostCardProps) {
         </div>
       </div>
       <div className="flex justify-evenly items-center mt-4 sm:flex-col sm:mt-0">
-        <button
-          onClick={() =>
-            navigate(generatePath(routes.editPost, { id: post.id }))
-          }
-        >
-          <Edit className="text-blue-500" />
-        </button>
-        <button>
-          <Trash2 className="text-red-500" />
-        </button>
+        <Tooltip title="Edit">
+          <button
+            onClick={() =>
+              navigate(generatePath(routes.editPost, { id: post.id }))
+            }
+          >
+            <Edit className="text-blue-500" />
+          </button>
+        </Tooltip>
+
+        <Tooltip title="Delete">
+          <button>
+            <Trash2 className="text-red-500" />
+          </button>
+        </Tooltip>
       </div>
     </div>
   );
