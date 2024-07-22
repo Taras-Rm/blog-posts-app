@@ -8,7 +8,6 @@ This is a basic API that allows us to work with blog posts.
 - Express.js
 - TypeScript
 - Prisma
-- nodemailer
 - express-validator
 - jest
 
