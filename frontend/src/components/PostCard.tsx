@@ -1,5 +1,6 @@
 import { Edit, Trash2 } from "lucide-react";
 import { generatePath, useNavigate } from "react-router-dom";
+import { formatDate } from "../lib/date";
 import { routes } from "../pages/routes";
 import { Post } from "../types/post";
 
@@ -24,7 +25,7 @@ function PostCard({ post }: PostCardProps) {
         <p className="text-slate-500 mb-6">{post.content}</p>
 
         <div className="text-slate-500 flex justify-between">
-          <div>{post.createdAt}</div>
+          <div>{formatDate(post.createdAt)}</div>
           <div>
             Author: <span>{post.author}</span>
           </div>

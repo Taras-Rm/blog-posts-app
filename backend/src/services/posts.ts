@@ -4,7 +4,7 @@ import { ApiError } from "../utils/apiError";
 import { httpStatus } from "../utils/httpStatus";
 
 const getAll = async () => {
-  return await prisma.post.findMany();
+  return await prisma.post.findMany({ orderBy: { createdAt: "desc" } });
 };
 
 const getById = async (id: number) => {

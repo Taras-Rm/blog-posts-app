@@ -1,35 +1,55 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getPost } from "../../api/posts";
 import PageWrapper from "../../components/PageWrapper";
+import Loader from "../../components/ui/Loader";
+import { formatDate } from "../../lib/date";
 import { Post } from "../../types/post";
 
-const defPost = {
-  id: 4,
-  title: "Second shorter post",
-  content:
-    "Lorem ipsum dolor sit amet consect harum eligendi! Quod voluptates sint voluptatum ab velit enim, animi consequuntur perferendis earum.",
-  author: "Ira Rom",
-  createdAt: "21.05.2002",
-};
-
 function PostDetailsPage() {
-  const [post, _] = useState<Post>(defPost);
+  const params = useParams<{ id: string }>();
+
+  const [post, setPost] = useState<Post | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleGetPost = async () => {
+    try {
+      setIsLoading(true);
+      const data = await getPost(Number(params.id));
+      setPost(data);
+    } catch (error) {
+      console.log("api error: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    handleGetPost();
+  }, []);
 
   // fetch post by id
   return (
     <PageWrapper>
-      <div>
-        <div className="flex justify-between items-end mb-3">
-          <h2 className="text-3xl">{post.title}</h2>
-          <div className="text-slate-500">
-            Created: <span>{post.createdAt}</span>
+      {isLoading ? (
+        <div className="flex justify-center pt-10">
+          <Loader />
+        </div>
+      ) : post ? (
+        <div>
+          <div className="flex justify-between items-end mb-3">
+            <h2 className="text-3xl">{post.title}</h2>
+            <div className="text-slate-500">
+              Created: <span>{formatDate(post.createdAt)}</span>
+            </div>
           </div>
-        </div>
-        <div className="mb-6 border-b border-primary w-fit">
-          Author: <span>{post.author}</span>
-        </div>
+          <div className="mb-6 border-b border-primary w-fit">
+            Author: <span>{post.author}</span>
+          </div>
 
-        <p>{post.content}</p>
-      </div>
+          <p>{post.content}</p>
+        </div>
+      ) : null}
     </PageWrapper>
   );
 }
