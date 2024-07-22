@@ -7,7 +7,7 @@ import Tooltip from "./ui/Tooltip";
 
 interface PostCardProps {
   post: Post;
-  onDeleteClick: () => void;
+  onDeleteClick: (id: number) => void;
 }
 
 function PostCard({ post, onDeleteClick }: PostCardProps) {
@@ -45,7 +45,7 @@ function PostCard({ post, onDeleteClick }: PostCardProps) {
         </Tooltip>
 
         <Tooltip title="Delete">
-          <button onClick={() => onDeleteClick()}>
+          <button onClick={() => onDeleteClick(post.id)}>
             <Trash2 className="text-red-500" />
           </button>
         </Tooltip>

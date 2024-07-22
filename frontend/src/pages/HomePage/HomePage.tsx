@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getAllPosts } from "../../api/posts";
+import { toast } from "react-toastify";
+import { deletePost, getAllPosts } from "../../api/posts";
 import PageWrapper from "../../components/PageWrapper";
 import PostCard from "../../components/PostCard";
 import Prompt from "../../components/Prompt";
@@ -7,7 +8,7 @@ import Loader from "../../components/ui/Loader";
 import { Post } from "../../types/post";
 
 function HomePage() {
-  const [showDeletePostPrompt, setShowDeletePostPrompt] = useState(false);
+  const [deletePostId, setDeletePostId] = useState<number | null>(null);
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,9 +19,24 @@ function HomePage() {
       const data = await getAllPosts();
       setPosts(data);
     } catch (error) {
+      toast.error("Failed to get all posts.");
       console.log("api error: ", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDeletePost = async () => {
+    if (!deletePostId) {
+      return;
+    }
+    try {
+      await deletePost(deletePostId);
+      await handleGetAllPosts();
+      toast.success("Post deleted!");
+    } catch (error) {
+      toast.error("Failed to delete post.");
+      console.log("api error: ", error);
     }
   };
 
@@ -41,7 +57,7 @@ function HomePage() {
               <PostCard
                 key={post.id}
                 post={post}
-                onDeleteClick={() => setShowDeletePostPrompt(true)}
+                onDeleteClick={(id: number) => setDeletePostId(id)}
               />
             ))
           ) : (
@@ -52,10 +68,12 @@ function HomePage() {
         </div>
       }
       <Prompt
-        show={showDeletePostPrompt}
-        setShow={setShowDeletePostPrompt}
+        show={!!deletePostId}
+        close={() => setDeletePostId(null)}
         title="Delete post"
         description="Do you really want to delete post ?"
+        onConfirm={handleDeletePost}
+        onCancel={() => setDeletePostId(null)}
       />
     </PageWrapper>
   );

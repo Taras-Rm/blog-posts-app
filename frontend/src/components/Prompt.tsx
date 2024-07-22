@@ -2,26 +2,29 @@ import Button from "./ui/Button";
 
 interface PromptProps {
   show: boolean;
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  close: () => void;
   title: string;
   description: string;
-  onConfirm?: () => void;
+  onConfirm: () => Promise<void>;
   onCancel?: () => void;
 }
 
 function Prompt({
   show,
-  setShow,
+  close,
   title,
   description,
   onCancel,
   onConfirm,
 }: PromptProps) {
-
-    
+  const onPromptConfirm = () => {
+    onConfirm();
+    close();
+  };
+  
   return show ? (
     <div
-      onClick={() => setShow(false)}
+      onClick={close}
       className="bg-[rgb(0,0,0,0.3)] h-full w-full fixed top-0 left-0 z-50 flex justify-center items-center"
     >
       <div
@@ -34,7 +37,7 @@ function Prompt({
           <Button onClick={onCancel} variant="default">
             Cancel
           </Button>
-          <Button onClick={onConfirm}>Confirm</Button>
+          <Button onClick={onPromptConfirm}>Confirm</Button>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { getPost } from "../../api/posts";
 import EditPostForm from "../../components/forms/EditPostForm";
 import PageWrapper from "../../components/PageWrapper";
@@ -18,6 +19,7 @@ function EditPostPage() {
       const data = await getPost(Number(params.id));
       setPost(data);
     } catch (error) {
+      toast.error("Failed to edit post.");
       console.log("api error: ", error);
     } finally {
       setIsLoading(false);

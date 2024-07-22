@@ -34,6 +34,7 @@ function CreatePostForm() {
       reset();
       toast.success("Post created!");
     } catch (error) {
+      toast.error("Failed to create post.");
       console.log("api error: ", error);
     } finally {
       setIsLoading(false);
