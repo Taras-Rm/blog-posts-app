@@ -28,9 +28,9 @@ This is a basic API that allows us to work with blog posts.
 git clone https://github.com/Taras-Rm/blog-posts-app.git
 ```
 
-2. Move to server folder:
+2. Move to backend folder:
 ``` bash
-cd ./server
+cd ./backend
 ```
 
 3. Install dependencies
