@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { getPost } from "../../api/posts";
 import PageWrapper from "../../components/PageWrapper";
 import Loader from "../../components/ui/Loader";
@@ -18,6 +19,7 @@ function PostDetailsPage() {
       const data = await getPost(Number(params.id));
       setPost(data);
     } catch (error) {
+      toast.error("Failed to get post!");
       console.log("api error: ", error);
     } finally {
       setIsLoading(false);
@@ -28,7 +30,6 @@ function PostDetailsPage() {
     handleGetPost();
   }, []);
 
-  // fetch post by id
   return (
     <PageWrapper>
       {isLoading ? (

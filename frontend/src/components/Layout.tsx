@@ -2,9 +2,7 @@ import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 
-interface LayoutProps {}
-
-function Layout({}: LayoutProps) {
+function Layout() {
   return (
     <div className="h-screen relative overflow-auto">
       <Header />

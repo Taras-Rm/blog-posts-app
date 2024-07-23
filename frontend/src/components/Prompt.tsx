@@ -6,7 +6,7 @@ interface PromptProps {
   title: string;
   description: string;
   onConfirm: () => Promise<void>;
-  onCancel?: () => void;
+  onCancel: () => void;
 }
 
 function Prompt({
@@ -21,7 +21,7 @@ function Prompt({
     onConfirm();
     close();
   };
-  
+
   return show ? (
     <div
       onClick={close}

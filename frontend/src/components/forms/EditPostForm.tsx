@@ -37,6 +37,7 @@ function EditPostForm({ post }: EditPostFormProps) {
       await updatePost(post.id, data);
       toast.success("Post updated!");
     } catch (error) {
+      toast.error("Failed to update post!");
       console.log("api error: ", error);
     } finally {
       setIsLoading(false);
